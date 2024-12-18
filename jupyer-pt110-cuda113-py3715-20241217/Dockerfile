@@ -9,6 +9,9 @@ ENV TORCHVISION_VERSION=0.11.2
 ENV TORCHAUDIO_VERSION=0.10.1
 ENV CUDA_TOOLKIT=11.3
 
+# Set bash as the default shell
+SHELL ["/bin/bash", "-c"]
+
 # Install system dependencies including SSL libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-dev \
@@ -30,6 +33,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libbz2-dev \
     libexpat1-dev \
     liblzma-dev \
+    libffi-dev \
     tk-dev \
     ca-certificates \
     && apt-get clean \
