@@ -10,7 +10,7 @@ ENV TORCHAUDIO_VERSION=0.10.1
 ENV CUDA_TOOLKIT=11.3
 
 # Set bash as the default shell
-SHELL ["/bin/bash", "-c"]
+SHELL ["/usr/bin/bash", "-c"]
 
 # Install system dependencies including SSL libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -30,12 +30,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsqlite3-dev \
     libgdbm-dev \
     libdb5.3-dev \
-    libbz2-dev \
+    libbz2-dev \:q
     libexpat1-dev \
     liblzma-dev \
     libffi-dev \
     tk-dev \
     ca-certificates \
+    vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -52,6 +53,8 @@ RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VER
 # Use Python 3.7 as default
 RUN ln -sf /usr/local/bin/python3.7 /usr/bin/python3 \
     && ln -sf /usr/local/bin/pip3.7 /usr/bin/pip3
+    && ln -sf /usr/local/bin/python3.7 /usr/bin/python \
+    && ln -sf /usr/local/bin/pip3.7 /usr/bin/pip
 
 # Upgrade pip
 RUN python3.7 -m pip install --upgrade pip setuptools
@@ -61,6 +64,8 @@ RUN pip3 install torch==${TORCH_VERSION}+cu113 \
     torchvision==${TORCHVISION_VERSION}+cu113 \
     torchaudio==${TORCHAUDIO_VERSION} \
     -f https://download.pytorch.org/whl/cu113/torch_stable.html
+
+RUN pip3 install nbformat==5.7.0
 
 # Install Jupyter Notebook
 RUN pip3 install jupyter notebook
